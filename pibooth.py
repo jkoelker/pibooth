@@ -79,20 +79,16 @@ class Photobooth (object):
         """Read events of the pygame event queue and handle them."""
 
         while self.running:
-            skip = False
-            event = pygame.event.wait()
-            # for e in events:
-            if event.type == pygame.locals.QUIT:
-                # close the camera safely and quit the pygame
-                self.cam.stop()
-                pygame.quit()
-                self.running = False
-            elif event.type == self.events['capture_event']:
-                self._get_and_save()
-                skip = True
+            self._get_and_display()
 
-            if self.running and not skip:
-                self._get_and_display()
+            for event in pygame.event.get():
+                if event.type == pygame.locals.QUIT:
+                # close the camera safely and quit the pygame
+                    self.cam.stop()
+                    pygame.quit()
+                    self.running = False
+                elif event.type == self.events['capture_event']:
+                    self._get_and_save()
 
 
 def main():
